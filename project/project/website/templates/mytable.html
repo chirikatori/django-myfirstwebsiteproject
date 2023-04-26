@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<center>
+    <h1> Crawled Data
+    </h1>
+</center> 
+<br/><br/>   <br/><br/>
+    <!-- {% for crawl in crawls %}
+    <div class="p-3 mb-2 bg-dark-subtle">
+        <font size="+2">
+        <a style="text-decoration: none" href="{% url 'show_off' crawl.id %}">{{ crawl.title }} - <a href="{{ crawl.url }}">{{ crawl.url }}</a></a><br/>
+        </font>
+    </div>
+    {% endfor %} -->
+    <ul style="list-style: none;padding: 0;margin: 0;">
+        {% for crawl in crawls %}
+        <font size="+2">
+            <li style="padding: 1rem 0;border-bottom:1px solid #ccc;margin: 20px;">
+                <a style="text-decoration:none;color:#333;" href="{{ crawl.url }}" target="_blank">
+                    <strong> {{ crawl.title }}</strong>
+                </a>
+                <p style="font-size: 0.8rem;color: #666;">Published: {{ crawl.published_at }}</p>        
+                <a href="{{ crawl.url }}" target="_blank" style="display: inline-block;max-width: 40ch;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;">{{ crawl.url }}</a>    
+            </li>
+        </font>
+        {% endfor %}
+    </ul>
+<br/><br/>
+  
+
+<nav aria-label="...">
+    <ul class="pagination">
+
+{% if crawls.has_previous %}
+    <li class="page-item"><a class="page-link" href="?page=1">&laquo First</a></li>
+    <li class="page-item"><a class="page-link" href="?page={{crawls.previous_page_number}}">Previous</a></li>
+{% else %}
+    <li class="page-item disabled"></li>
+    {% endif %}
+
+    {% if crawls.number|add:'-3' > 1 %}
+        <li><a class="page-link" href="?page={{ crawls.number|add:'-3' }}">&hellip;</a></li>
+    {% endif %}
+
+    {% for i in crawls.paginator.page_range %}
+        {% if crawls.number == i %}
+        <li class="page-item active"><span class="page-link">{{ i }}<span class="sr-only"></span></span></li>
+        {% elif i > crawls.number|add:'-3' and i < crawls.number|add:'3' %}
+        <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+        {% endif %}
+    {% endfor %}
+
+    {% if crawls.paginator.num_pages > crawls.number|add:'3' %}
+        <li><a class="page-link" href="?page={{crawls.number|add:'-3'}}">&hellip;</a></li>
+        <li><a></a href="?page={{ i }}">{{ i }}</li>
+        <li><a class="page-link" href="?page={{crawls.paginator.num_pages}}">{{ crawls.paginator.num_pages }}</a></li>
+    {% endif %}
+
+
+{% if crawls.has_next %}
+    <li class="page-item"><a class="page-link" href="?page={{crawls.next_page_number}}">Next</a></li>
+    <li class="page-item"><a class="page-link" href="?page={{crawls.paginator.num_pages}}">Last &raquo</a></li>
+{% endif %}
+
+     
+</ul>
+</nav>
+
+{% endblock %}

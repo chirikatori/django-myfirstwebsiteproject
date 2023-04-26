@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<center>
+    <h1>
+        <font size ="+15">
+        Data
+    </font>
+    </h1>
+    <div class="shadow-lg p-3 mb-5 bg-body-tertiary rounded">
+        <font size ="+2">
+        <strong>{{ data.title }} - <a href="{{ data.url }}">{{ data.url }}</a></strong><br/>
+        </font>
+    </div>
+    <br/>
+</center>  
+<div class="shadow p-3 mb-5 bg-body-tertiary rounded">  
+    <font size ="+1.5">
+    <p class="lh-base">{{ data.content }}</p><br/>
+    </font>
+</div>    
+
+{% endblock %}
